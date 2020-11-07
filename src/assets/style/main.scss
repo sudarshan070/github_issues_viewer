@@ -1,3 +1,24 @@
 svg {
   fill: currentColor;
 }
+ul li:last-child {
+  border-bottom: 0 !important;
+}
+h2 {
+  font-weight: 600;
+  color: #24292e;
+}
+.text-small {
+  font-size: 14px;
+}
+.first-row {
+  background-color: #f6f8fa;
+}
+.assignee-avatar {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+img {
+  //   width: 100%;
+  height: 100%;
+}
