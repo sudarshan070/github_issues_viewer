@@ -1,17 +1,21 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
 
-export default function IssuesPage() {
+export default function IssuesList() {
   const [issues, setIssues] = useState(null);
+  const { org, repo } = useParams();
   useEffect(() => {
     Axios.get(
       `https://api.github.com/repos/sudarshan070/trello-clone-api/issues`
-    ).then((res) => {
-      const issues = res.data;
-      console.log(issues);
-      setIssues(issues);
-    });
+    )
+      .then((res) => {
+        const issues = res.data;
+        console.log(issues);
+        setIssues(issues);
+      })
+      .catch((err) => Promise.reject(err));
   }, []);
   return (
     <div className="container-xl mt-5 media-display">
@@ -50,9 +54,15 @@ export default function IssuesPage() {
                       </div>
                       <div className="p-2">
                         <div>
-                          <h2>{issue.title}</h2>
+                          <Link
+                            to={`/sudarshan070/trello-clone-api/issues/${issue.number}`}
+                          >
+                            <h2>{issue.title}</h2>
+                          </Link>
+
                           <span>{issue.labels}</span>
                         </div>
+
                         <p className="text-small text-secondary mt-1">{`#${issue.number} opened by ${issue.user.login}`}</p>
                       </div>
                     </div>
@@ -64,7 +74,7 @@ export default function IssuesPage() {
                               placement="bottom"
                               overlay={
                                 <Tooltip>
-                                  {`Assign to ${issue.assignee.login}.`}
+                                  {`Assign to ${issue.assignee.login}`}
                                 </Tooltip>
                               }
                             >
