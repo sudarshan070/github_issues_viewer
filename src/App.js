@@ -1,9 +1,12 @@
 import React from 'react'
+import Header from './components/Header';
+import IssuesList from './components/Issueslist'
 
 function App() {
   return (
     <div >
-   <p>Hello</p>
+      <Header />
+      <IssuesList />
     </div>
   );
 }
