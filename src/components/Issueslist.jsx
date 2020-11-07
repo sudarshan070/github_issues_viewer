@@ -1,5 +1,6 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 export default function IssuesPage() {
   const [issues, setIssues] = useState(null);
@@ -13,10 +14,10 @@ export default function IssuesPage() {
     });
   }, []);
   return (
-    <div className="container-xl mt-5">
+    <div className="container-xl mt-5 media-display">
       <div className="border rounded">
-        <div className="border-bottom d-flex justify-content-between p-3 first-row rounded-top text-small">
-          <div className="d-flex ">
+        <div className="border-bottom d-flex justify-content-between p-3 first-row rounded-top text-small media-flex-around">
+          <div className="d-flex display-media-none">
             <div className="mr-2">
               <p>
                 <OpenIssuesIcon /> <span>Open</span>
@@ -28,11 +29,11 @@ export default function IssuesPage() {
               </p>
             </div>
           </div>
-          <div className="d-flex">
+          <div className="d-flex ">
             <h3 className="px-3">Author</h3>
             <h3 className="px-3">Label</h3>
-            <h3 className="px-3">Project</h3>
-            <h3 className="px-3">Milestone</h3>
+            <h3 className="px-3 display-media-none">Project</h3>
+            <h3 className="px-3 display-media-none">Milestone</h3>
             <h3 className="px-3">Assignee</h3>
             <h3 className="px-3">Sort</h3>
           </div>
@@ -55,14 +56,25 @@ export default function IssuesPage() {
                         <p className="text-small text-secondary mt-1">{`#${issue.number} opened by ${issue.user.login}`}</p>
                       </div>
                     </div>
-                    <div className="d-flex p-2">
+                    <div className="d-flex p-2 display-media-none">
                       <div className="assignee-avatar px-3">
                         {issue.assignee ? (
-                          <img
-                            className="rounded-circle"
-                            src={issue.assignee.avatar_url}
-                            alt={issue.assignee.login}
-                          />
+                          <>
+                            <OverlayTrigger
+                              placement="bottom"
+                              overlay={
+                                <Tooltip>
+                                  {`Assign to ${issue.assignee.login}.`}
+                                </Tooltip>
+                              }
+                            >
+                              <img
+                                className="rounded-circle"
+                                src={issue.assignee.avatar_url}
+                                alt={issue.assignee.login}
+                              />
+                            </OverlayTrigger>
+                          </>
                         ) : (
                           ""
                         )}
