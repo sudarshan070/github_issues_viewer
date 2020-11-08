@@ -24,3 +24,32 @@ h2 {
 img {
   height: 100%;
 }
+
+.issues-detail {
+  span,
+  h1 {
+    font-size: 2rem;
+    font-weight: 400;
+  }
+  span {
+    color: #6a737d;
+  }
+}
+.btn-open-issue {
+  border-radius: 3rem !important;
+}
+
+.user-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.single-issue-body {
+  width: 65%;
+  .body-header {
+    background: #f1f8fe;
+  }
+}
+
+.custom-control-input:focus ~ .custom-control-label::before {
+  box-shadow: none;
+}

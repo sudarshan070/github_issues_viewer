@@ -1,9 +1,15 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 export default function Header() {
   return (
     <header className="d-flex justify-content-between align-items-center bg-dark text-white p-3">
-      <GithubIcon />
+      <NavLink
+        to={`/sudarshan070/trello-clone-api/issues`}
+        style={{ color: "#fff" }}
+      >
+        <GithubIcon />
+      </NavLink>
       <h1 style={{ fontSize: "1.2rem" }}>Github Issues Viewer</h1>
     </header>
   );

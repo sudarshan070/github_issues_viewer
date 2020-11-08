@@ -1,6 +1,5 @@
 import React from 'react'
-import Switch from 'react-bootstrap/esm/Switch';
-import { BrowserRouter, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Header from './components/Header';
 import IssuesList from './components/Issueslist'
 import IssuesDetail from './components/IssuesDetail'

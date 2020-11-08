@@ -1,22 +1,27 @@
 import Axios from "axios";
 import React, { useEffect, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 export default function IssuesList() {
   const [issues, setIssues] = useState(null);
+  const [loading, setLoading] = useState("false");
   const { org, repo } = useParams();
+
   useEffect(() => {
-    Axios.get(
-      `https://api.github.com/repos/sudarshan070/trello-clone-api/issues`
-    )
-      .then((res) => {
-        const issues = res.data;
-        console.log(issues);
-        setIssues(issues);
-      })
-      .catch((err) => Promise.reject(err));
-  }, []);
+    async function fetchIssuesList() {
+      try {
+        setLoading("true");
+        const issue = await Axios.get(
+          `https://api.github.com/repos/${org}/${repo}/issues`
+        );
+        setIssues(issue.data);
+      } catch (error) {
+        setLoading("null");
+      }
+    }
+    fetchIssuesList();
+  }, [org, repo]);
   return (
     <div className="container-xl mt-5 media-display">
       <div className="border rounded">
@@ -43,7 +48,11 @@ export default function IssuesList() {
           </div>
         </div>
         <ul>
-          {issues ? (
+          {loading === "false" ? (
+            <h3>Issues is Loading..</h3>
+          ) : loading === "null" ? (
+            <h3>Something is wrong</h3>
+          ) : issues ? (
             issues.map((issue, i) => {
               return (
                 <li key={i} className="border-bottom">
@@ -54,11 +63,12 @@ export default function IssuesList() {
                       </div>
                       <div className="p-2">
                         <div>
-                          <Link
+                          <NavLink
+                            style={{ textDecoration: "none" }}
                             to={`/sudarshan070/trello-clone-api/issues/${issue.number}`}
                           >
                             <h2>{issue.title}</h2>
-                          </Link>
+                          </NavLink>
 
                           <span>{issue.labels}</span>
                         </div>
@@ -104,7 +114,7 @@ export default function IssuesList() {
               );
             })
           ) : (
-            <div>Loading...</div>
+            ""
           )}
         </ul>
       </div>
