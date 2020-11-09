@@ -1,13 +1,10 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-export default function Header() {
+export default function Header(props) {
   return (
     <header className="d-flex justify-content-between align-items-center bg-dark text-white p-3">
-      <NavLink
-        to={`/sudarshan070/trello-clone-api/issues`}
-        style={{ color: "#fff" }}
-      >
+      <NavLink to={`/vercel/next.js/issues`} style={{ color: "#fff" }}>
         <GithubIcon />
       </NavLink>
       <h1 style={{ fontSize: "1.2rem" }}>Github Issues Viewer</h1>

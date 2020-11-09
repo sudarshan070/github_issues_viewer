@@ -7,117 +7,153 @@ import check from "../assets/svg/checkicon.svg";
 import comment from "../assets/svg/comment.svg";
 
 export default function IssuesList() {
-  const [issues, setIssues] = useState(null);
+  const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [offset, setOffset] = useState(0);
+  const [perPage] = useState(10);
   const { org, repo } = useParams();
+  const [pageCount, setPageCount] = useState(0);
+
+  const fetchIssuesList = async () => {
+    try {
+      setLoading(true);
+      const issue = await Axios.get(
+        `https://api.github.com/repos/${org}/${repo}/issues?page=${pageCount}`
+      );
+      const data = issue.data;
+      // console.log(data);
+      let issues = data.slice(offset, offset + perPage);
+      setIssues(issues);
+    } catch (error) {
+      setLoading("null");
+    }
+  };
 
   useEffect(() => {
-    async function fetchIssuesList() {
-      try {
-        setLoading(true);
-        const issue = await Axios.get(
-          `https://api.github.com/repos/${org}/${repo}/issues`
-        );
-        setIssues(issue.data);
-      } catch (error) {
-        setLoading("null");
-      }
-    }
     fetchIssuesList();
-  }, [org, repo]);
+  }, [pageCount]);
+
+  const handleClick = (operation) => {
+    if (operation === "decr") {
+      if (pageCount <= 0) {
+        return;
+      }
+      setPageCount(pageCount - 1);
+    } else if (operation === "incr") {
+      setPageCount(pageCount + 1);
+    }
+  };
+
   return (
-    <div className="container-xl mt-5 media-display">
-      <div className="border rounded">
-        <div className="border-bottom d-flex justify-content-between p-3 first-row rounded-top text-small media-flex-around">
-          <div className="d-flex display-media-none">
-            <div className="mr-2 d-flex">
-              <img src={openIssue} alt="openIssue" /> <span>Open</span>
+    <>
+      <div className="container-xl mt-5 media-display">
+        <div className="border rounded">
+          <div className="border-bottom d-flex justify-content-between p-3 first-row rounded-top text-small media-flex-around">
+            <div className="d-flex display-media-none">
+              <div className="mr-2 d-flex">
+                <img src={openIssue} alt="openIssue" /> <span>Open</span>
+              </div>
+              <div className="d-flex">
+                <img src={check} alt="check" /> <span>Closed</span>
+              </div>
             </div>
-            <div className="d-flex">
-              <img src={check} alt="check" /> <span>Closed</span>
+            <div className="d-flex ">
+              <h3 className="px-3">Author</h3>
+              <h3 className="px-3">Label</h3>
+              <h3 className="px-3 display-media-none">Project</h3>
+              <h3 className="px-3 display-media-none">Milestone</h3>
+              <h3 className="px-3">Assignee</h3>
+              <h3 className="px-3">Sort</h3>
             </div>
           </div>
-          <div className="d-flex ">
-            <h3 className="px-3">Author</h3>
-            <h3 className="px-3">Label</h3>
-            <h3 className="px-3 display-media-none">Project</h3>
-            <h3 className="px-3 display-media-none">Milestone</h3>
-            <h3 className="px-3">Assignee</h3>
-            <h3 className="px-3">Sort</h3>
-          </div>
-        </div>
-        <ul>
-          {loading === false ? (
-            <h3>Issues is Loading..</h3>
-          ) : loading === "null" ? (
-            <h3>Something is wrong</h3>
-          ) : issues ? (
-            issues.map((issue, i) => {
-              return (
-                <li key={i} className="border-bottom">
-                  <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div className=" pl-3 pt-2 text-success flex-start">
-                        <Openissue />
-                      </div>
-                      <div className="p-2">
-                        <div>
-                          <NavLink
-                            style={{ textDecoration: "none" }}
-                            to={`/sudarshan070/trello-clone-api/issues/${issue.number}`}
-                          >
-                            <h2>{issue.title}</h2>
-                          </NavLink>
-
-                          <span>{issue.labels}</span>
+          <ul>
+            {loading === false ? (
+              <h3>Issues is Loading..</h3>
+            ) : loading === "null" ? (
+              <h3>Something is wrong</h3>
+            ) : issues ? (
+              issues.map((issue, i) => {
+                return (
+                  <li key={i} className="border-bottom">
+                    <div className="d-flex justify-content-between">
+                      <div className="d-flex">
+                        <div className=" pl-3 pt-2 text-success flex-start">
+                          <Openissue />
                         </div>
-
-                        <p className="text-small text-secondary mt-1">{`#${issue.number} opened by ${issue.user.login}`}</p>
-                      </div>
-                    </div>
-                    <div className="d-flex p-2 display-media-none">
-                      <div className="assignee-avatar px-3">
-                        {issue.assignee ? (
-                          <>
-                            <OverlayTrigger
-                              placement="bottom"
-                              overlay={
-                                <Tooltip>
-                                  {`Assign to ${issue.assignee.login}`}
-                                </Tooltip>
-                              }
-                            >
-                              <img
-                                className="rounded-circle"
-                                src={issue.assignee.avatar_url}
-                                alt={issue.assignee.login}
-                              />
-                            </OverlayTrigger>
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </div>
-                      <div className="px-4">
-                        {issue.comments ? (
+                        <div className="p-2">
                           <div>
-                            <img src={comment} alt="comment" /> {issue.comments}
+                            <NavLink
+                              style={{ textDecoration: "none" }}
+                              to={`/${org}/${repo}/issues/${issue.number}`}
+                            >
+                              <h2>{issue.title}</h2>
+                            </NavLink>
+
+                            {/* <div>{issue.labels}</div> */}
                           </div>
-                        ) : (
-                          ""
-                        )}
+
+                          <p className="text-small text-secondary mt-1">{`#${issue.number} opened by ${issue.user.login}`}</p>
+                        </div>
+                      </div>
+                      <div className="d-flex p-2 display-media-none">
+                        <div className="assignee-avatar px-3">
+                          {issue.assignee ? (
+                            <>
+                              <OverlayTrigger
+                                placement="bottom"
+                                overlay={
+                                  <Tooltip>
+                                    {`Assign to ${issue.assignee.login}`}
+                                  </Tooltip>
+                                }
+                              >
+                                <img
+                                  className="rounded-circle"
+                                  src={issue.assignee.avatar_url}
+                                  alt={issue.assignee.login}
+                                />
+                              </OverlayTrigger>
+                            </>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                        <div className="px-4">
+                          {issue.comments ? (
+                            <div>
+                              <img src={comment} alt="comment" />{" "}
+                              {issue.comments}
+                            </div>
+                          ) : (
+                            ""
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              );
-            })
-          ) : (
-            ""
-          )}
-        </ul>
+                  </li>
+                );
+              })
+            ) : (
+              ""
+            )}
+          </ul>
+        </div>
       </div>
-    </div>
+      <div className="text-center pt-2">
+        <button
+          className="btn-outline-primary btn "
+          onClick={() => handleClick("decr")}
+        >
+          previous
+        </button>
+        <button
+          className="btn-outline-primary btn ml-2"
+          onClick={() => handleClick("incr")}
+        >
+          next
+        </button>
+      </div>
+    </>
   );
 }
 

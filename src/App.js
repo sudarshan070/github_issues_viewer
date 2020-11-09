@@ -10,12 +10,11 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/">
-          <Redirect to="/sudarshan070/trello-clone-api/issues" />
+          <Redirect to="/vercel/next.js/issues" />
         </Route>
         <Route exact path="/:org/:repo/issues" component={IssuesList} />
         <Route exact path="/:org/:repo/issues/:number" component={IssuesDetail} />
       </Switch>
-
     </BrowserRouter>
   );
 }
