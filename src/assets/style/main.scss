@@ -1,0 +1,51 @@
+svg {
+  fill: currentColor;
+}
+ul li:last-child {
+  border-bottom: 0 !important;
+}
+li:hover {
+  background-color: #f6f8fa;
+}
+h2 {
+  font-weight: 600;
+  color: #24292e;
+}
+.text-small {
+  font-size: 14px;
+}
+.first-row {
+  background-color: #f6f8fa;
+}
+.assignee-avatar {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+img {
+  height: 100%;
+}
+
+.issues-detail {
+  span,
+  h1 {
+    font-size: 2rem;
+    font-weight: 400;
+  }
+  span {
+    color: #6a737d;
+  }
+}
+.btn-open-issue {
+  border-radius: 3rem !important;
+}
+
+.user-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.single-issue-body {
+  width: 65%;
+  .body-header {
+    background: #f1f8fe;
+  }
+}

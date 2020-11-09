@@ -1,0 +1,17 @@
+@media only screen and (max-width: 720px) {
+  .display-media-none {
+    display: none !important;
+  }
+  .media-display {
+    width: 100% !important;
+    padding: 0;
+  }
+  .media-flex-around {
+    display: flex;
+    justify-content: space-around !important;
+  }
+  .single-issue-body {
+    margin: 0 !important;
+    width: 100%;
+  }
+}

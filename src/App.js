@@ -1,10 +1,21 @@
 import React from 'react'
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import Header from './components/Header';
+import IssuesList from './components/Issueslist'
+import IssuesDetail from './components/IssuesDetail'
 
 function App() {
   return (
-    <div >
-   <p>Hello</p>
-    </div>
+    <BrowserRouter >
+      <Header />
+      <Switch>
+        <Route exact path="/">
+          <Redirect to="/vercel/next.js/issues" />
+        </Route>
+        <Route exact path="/:org/:repo/issues" component={IssuesList} />
+        <Route exact path="/:org/:repo/issues/:number" component={IssuesDetail} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
