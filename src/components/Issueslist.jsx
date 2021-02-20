@@ -21,7 +21,6 @@ export default function IssuesList() {
         `https://api.github.com/repos/${org}/${repo}/issues?page=${pageCount}`
       );
       const data = issue.data;
-      // console.log(data);
       let issues = data.slice(offset, offset + perPage);
       setIssues(issues);
     } catch (error) {
@@ -88,8 +87,6 @@ export default function IssuesList() {
                             >
                               <h2>{issue.title}</h2>
                             </NavLink>
-
-                            {/* <div>{issue.labels}</div> */}
                           </div>
 
                           <p className="text-small text-secondary mt-1">{`#${issue.number} opened by ${issue.user.login}`}</p>
